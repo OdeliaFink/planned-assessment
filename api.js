@@ -4,18 +4,20 @@ const sqlite3 = require('sqlite3')
 const app = express()
 const port = 4001
 const db = new sqlite3.Database('memories.db')
+const bodyParser = require('body-parser')
 
 app.use(express.json())
-
+app.use(bodyParser.urlencoded({ extended: false }))
 db.serialize(() => {
   db.run(`
-    CREATE TABLE IF NOT EXISTS memories (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT,
-      description TEXT,
-      timestamp DATE
-    )
-  `)
+  CREATE TABLE IF NOT EXISTS memories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    imageUrl TEXT,
+    name TEXT,
+    description TEXT,
+    timestamp DATE
+  )
+`)
 })
 
 app.get('/memories', (req, res) => {
@@ -39,7 +41,7 @@ app.post('/memories', (req, res) => {
   }
 
   const stmt = db.prepare(
-    'INSERT INTO memories (name, description, timestamp) VALUES (?, ?, ?)'
+    `INSERT INTO memories (imageUrl, name, description, timestamp) VALUES (?,?,?,?)`
   )
   stmt.run(name, description, timestamp, (err) => {
     if (err) {
@@ -90,6 +92,8 @@ app.put('/memories/:id', (req, res) => {
 
 app.delete('/memories/:id', (req, res) => {
   const { id } = req.params
+  console.log('🚀 ~ file: api.js:112 ~ app.delete ~  req.params:', req.params)
+
   db.run('DELETE FROM memories WHERE id = ?', [id], (err) => {
     if (err) {
       res.status(500).json({ error: err.message })
