@@ -5,8 +5,10 @@ const app = express()
 const port = 4001
 const db = new sqlite3.Database('memories.db')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
 app.use(express.json())
+app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 db.serialize(() => {
   db.run(`
@@ -43,7 +45,7 @@ app.post('/memories', (req, res) => {
   const stmt = db.prepare(
     `INSERT INTO memories (imageUrl, name, description, timestamp) VALUES (?,?,?,?)`
   )
-  stmt.run(name, description, timestamp, (err) => {
+  stmt.run(imageUrl, name, description, timestamp, (err) => {
     if (err) {
       res.status(500).json({ error: err.message })
       return
@@ -69,7 +71,7 @@ app.get('/memories/:id', (req, res) => {
 
 app.put('/memories/:id', (req, res) => {
   const { id } = req.params
-  const { name, description, timestamp } = req.body
+  const { imageUrl, name, description, timestamp } = req.body
 
   if (!name || !description || !timestamp) {
     res.status(400).json({
@@ -79,9 +81,9 @@ app.put('/memories/:id', (req, res) => {
   }
 
   const stmt = db.prepare(
-    'UPDATE memories SET name = ?, description = ?, timestamp = ? WHERE id = ?'
+    'UPDATE memories SET imageUrl = ?, name = ?, description = ?, timestamp = ? WHERE id = ?'
   )
-  stmt.run(name, description, timestamp, id, (err) => {
+  stmt.run(imageUrl, name, description, timestamp, id, (err) => {
     if (err) {
       res.status(500).json({ error: err.message })
       return
