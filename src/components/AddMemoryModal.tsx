@@ -62,7 +62,7 @@ const AddMemoryModal: React.FC = () => {
   return (
     <div>
       <button
-        className='flex rounded-md bg-white border border-black px-2 py-1 items-center hover:bg-orange-200 focus:outline-none'
+        className='flex rounded-md bg-white border border-black px-2 py-1 items-center hover:bg-orange-200 focus:outline-none ease-in-out duration-300'
         onClick={openModal}
       >
         <svg
@@ -83,7 +83,7 @@ const AddMemoryModal: React.FC = () => {
       {isModalOpen && (
         <div className='fixed inset-0 flex items-center justify-center z-50 mt-15 '>
           <div className='bg-white w-1/2 p-6 rounded-md shadow-lg border-2 border-solid border-black'>
-            <h2 className='text-lg font-semibold mb-4'>Add Memory</h2>
+            <h2 className='text-lg font-semibold mb-4'>add Memory</h2>
             <form onSubmit={handleSubmit}>
               <div className='mb-4'>
                 <label
@@ -131,7 +131,7 @@ const AddMemoryModal: React.FC = () => {
               <div className='mt-4 flex justify-end'>
                 <button
                   type='button'
-                  className='mr-4 px-4 py-2 bg-neutral-300 text-gray-700 rounded-md hover:bg-gray-200 focus:outline-none'
+                  className='mr-4 px-4 py-2 bg-neutral-300 text-gray-700 rounded-md hover:bg-gray-200  focus:outline-none'
                   onClick={closeModal}
                 >
                   cancel
