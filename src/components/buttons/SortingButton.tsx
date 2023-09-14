@@ -33,7 +33,7 @@ const SortingButton: React.FC = () => {
   return (
     <div className='relative inline-block'>
       <button
-        className='rounded-md bg-white border border-black px-2 py-1  pr-6 hover:bg-orange-200 ease-in-out duration-200 focus:outline-none text-xs'
+        className='rounded-md bg-white px-2 py-1  pr-6 hover:bg-orange-200 ease-in-out duration-200 focus:outline-none text-xs bg-white shadow-md'
         onClick={toggleDropdown}
       >
         {sortOrder === 'newToOld' ? 'new to old' : 'old to new'}{' '}

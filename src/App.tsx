@@ -15,7 +15,7 @@ function App() {
   // }
 
   return (
-    <div className='flex bg-gray-100 h-screen'>
+    <div className='flex bg-gray-100'>
       <div className='flex-shrink-0 p-2  pt-5 border-r border-gray-300'>
         <CubeIcon className='h-12 w-12 inline-block' />
       </div>
