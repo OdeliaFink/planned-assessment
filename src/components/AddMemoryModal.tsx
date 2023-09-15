@@ -1,18 +1,21 @@
 import * as React from 'react'
 import * as Yup from 'yup'
 
-const AddMemoryModal: React.FC = ({}: any) => {
+type Props = {
+  updateParentHandler: () => void
+}
+
+const AddMemoryModal = ({ updateParentHandler }: Props) => {
   const [isModalOpen, setModalOpen] = React.useState(false)
-  const [formData, setFormData] = React.useState({
-    name: '',
-    description: '',
-    imageUrl: '',
-  })
+  const [formData, setFormData] = React.useState({})
+  const validUrlRegex = new RegExp(/https?:\/\/.*.*$/)
 
   const schema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     description: Yup.string().required('Description is required'),
-    imageUrl: Yup.string().required('Image URL is required'),
+    imageUrl: Yup.string()
+      .required('Image URL is required')
+      .matches(validUrlRegex, 'enter valid url'),
   })
 
   const openModal = () => {
@@ -21,19 +24,15 @@ const AddMemoryModal: React.FC = ({}: any) => {
 
   const closeModal = () => {
     setModalOpen(false)
-    console.log('CLOSED')
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log('🚀 ~ file: AddMemoryModal.tsx:27 ~ handleSubmit ~ e:', e)
     e.preventDefault()
     try {
       await schema.validate(formData, { abortEarly: false })
       const timestamp = new Date().toISOString()
 
       const dataToSend = { ...formData, timestamp }
-
-      console.log('Form data:', dataToSend)
       const response = await fetch('http://localhost:4001/memories/', {
         method: 'POST',
         headers: {
@@ -41,15 +40,12 @@ const AddMemoryModal: React.FC = ({}: any) => {
         },
         body: JSON.stringify(dataToSend),
       })
-      console.log(
-        '🚀 ~ file: AddMemoryModal.tsx:43 ~ handleSubmit ~ response:',
-        response
-      )
 
       if (response.status === 201) {
         const newMemory = await response.json()
         console.log('Memory created successfully:', newMemory)
-
+        updateParentHandler()
+        setFormData({})
         closeModal()
       } else {
         const responseData = await response.json()
@@ -103,7 +99,7 @@ const AddMemoryModal: React.FC = ({}: any) => {
                   id='name'
                   name='name'
                   className='mt-1 p-2 rounded-md border border-gray-300 focus:ring focus:ring-indigo-200 focus:outline-none block w-full sm:text-sm'
-                  value={formData.name}
+                  // value={formData.name}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
@@ -121,7 +117,7 @@ const AddMemoryModal: React.FC = ({}: any) => {
                   name='description'
                   rows={3}
                   className='mt-1 p-2 rounded-md border border-gray-300 focus:ring focus:ring-indigo-200 focus:outline-none block w-full sm:text-sm'
-                  value={formData.description}
+                  // value={formData.description}
                   onChange={(e) =>
                     setFormData({ ...formData, description: e.target.value })
                   }
@@ -139,7 +135,7 @@ const AddMemoryModal: React.FC = ({}: any) => {
                   id='imageUrl'
                   name='imageUrl'
                   className='mt-1 p-2 rounded-md border border-gray-300 focus:ring focus:ring-indigo-200 focus:outline-none block w-full sm:text-sm'
-                  value={formData.imageUrl}
+                  // value={formData.imageUrl}
                   onChange={(e) =>
                     setFormData({ ...formData, imageUrl: e.target.value })
                   }

@@ -1,17 +1,30 @@
 import * as React from 'react'
+import AddMemoryModal from './AddMemoryModal'
+import SortingButton from './buttons/SortingButton'
 import MemoryCard from './MemoryCard'
 
-interface MemoryListProps {
-  sortOrder: 'newToOld' | 'oldToNew'
+interface SortingOrder {
+  newToOld: 'newToOld'
+  oldToNew: 'oldToNew'
 }
 
-const MemoryList: React.FC<MemoryListProps> = ({ sortOrder }) => {
+const MemoryList = () => {
   const [memories, setMemories] = React.useState<any[]>([])
   const [errorMsg, setErrorMsg] = React.useState<null | string>(null)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [sortOrder, setSortOrder] =
+    React.useState<SortingOrder['newToOld']>('newToOld')
 
-  React.useEffect(() => {
-    setIsLoading(true)
+  // const addMemoryToList = (newMemory: any) => {
+  //   setMemories([...memories, newMemory])
+  // }
+
+  // Function to handle sorting order change
+  const handleSortOrderChange = (newSortOrder: any) => {
+    setSortOrder(newSortOrder)
+  }
+
+  const fetchMemories = () => {
     fetch('http://localhost:4001/memories/')
       .then((response) => response.json())
       .then((data) => {
@@ -22,11 +35,17 @@ const MemoryList: React.FC<MemoryListProps> = ({ sortOrder }) => {
         console.error('Error fetching data:', error)
         setErrorMsg(error.message || 'An error occurred')
       })
+  }
+
+  const refreshMemories = React.useCallback(() => {
+    setIsLoading(true)
+    fetchMemories()
+    setIsLoading(false)
   }, [])
 
-  const addMemoryToList = (newMemory: any) => {
-    setMemories([...memories, newMemory])
-  }
+  React.useEffect(() => {
+    refreshMemories()
+  }, [])
 
   // Sort memories based on sortOrder
   const sortedMemories = [...memories].sort((a, b) => {
@@ -46,47 +65,57 @@ const MemoryList: React.FC<MemoryListProps> = ({ sortOrder }) => {
 
   return (
     <>
-      <ul>
-        {sortedMemories.map(
-          (
-            memory: {
-              id: number
-              name: string
-              description: string
-              timestamp: string
-              imageUrl: string
-            },
-            index: number
-          ) => (
-            <li
-              key={memory.id}
-              className='flex flex-col justify-center  w-2/5 ml-auto mr-auto py-2'
-            >
-              <MemoryCard
-                memoryId={memory.id}
-                imageUrl={memory.imageUrl}
-                name={memory.name}
-                description={memory.description}
-                date={memory.timestamp} // Assuming 'timestamp' is the date
-              />
-              {index !== memories.length - 1 && (
-                <ul className='w-[10%] ml-auto mr-auto py-2 pt-5'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    width='30'
-                    height='30'
-                    viewBox='0 0 10 30'
-                  >
-                    <circle cx='5' cy='5' r='2' fill='black' />
-                    <circle cx='5' cy='15' r='2' fill='black' />
-                    <circle cx='5' cy='25' r='2' fill='black' />
-                  </svg>
-                </ul>
-              )}
-            </li>
-          )
-        )}
-      </ul>
+      <div className=''>
+        <div className='flex justify-between flex-row  py-7'>
+          <SortingButton
+            sortOrder={sortOrder}
+            onSortOrderChange={handleSortOrderChange}
+          />
+          <AddMemoryModal updateParentHandler={refreshMemories} />
+        </div>
+        <ul>
+          {sortedMemories.map(
+            (
+              memory: {
+                id: number
+                name: string
+                description: string
+                timestamp: string
+                imageUrl: string
+              },
+              index: number
+            ) => (
+              <li
+                key={memory.id}
+                className='flex flex-col justify-center  w-2/5 ml-auto mr-auto py-2'
+              >
+                <MemoryCard
+                  memoryId={memory.id}
+                  imageUrl={memory.imageUrl}
+                  name={memory.name}
+                  description={memory.description}
+                  date={memory.timestamp}
+                  updateParentHandler={refreshMemories}
+                />
+                {index !== memories.length - 1 && (
+                  <ul className='w-[10%] ml-auto mr-auto py-2 pt-5'>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      width='30'
+                      height='30'
+                      viewBox='0 0 10 30'
+                    >
+                      <circle cx='5' cy='5' r='2' fill='black' />
+                      <circle cx='5' cy='15' r='2' fill='black' />
+                      <circle cx='5' cy='25' r='2' fill='black' />
+                    </svg>
+                  </ul>
+                )}
+              </li>
+            )
+          )}
+        </ul>
+      </div>
     </>
   )
 }

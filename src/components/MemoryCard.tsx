@@ -5,7 +5,8 @@ interface MemoryCardProps {
   name: string
   description: string
   date: string
-  memoryId: any
+  memoryId: number
+  updateParentHandler: () => void
 }
 
 const MemoryCard: React.FC<MemoryCardProps> = ({
@@ -14,7 +15,9 @@ const MemoryCard: React.FC<MemoryCardProps> = ({
   description,
   date,
   memoryId,
+  updateParentHandler,
 }) => {
+  console.log('🚀 ~ file: MemoryCard.tsx:18 ~ date:', date)
   const [showOptions, setShowOptions] = React.useState(false)
   const [isEditing, setIsEditing] = React.useState(false)
   const [editedData, setEditedData] = React.useState({
@@ -24,6 +27,9 @@ const MemoryCard: React.FC<MemoryCardProps> = ({
   })
 
   const dropdownRef = React.useRef<HTMLDivElement | null>(null)
+
+  const formatDate = (date: Date, dateFormat: Intl.DateTimeFormatOptions) =>
+    date.toLocaleDateString('en-US', dateFormat)
 
   // Function to handle outside click
   const handleClickOutside = (event: MouseEvent) => {
@@ -73,6 +79,7 @@ const MemoryCard: React.FC<MemoryCardProps> = ({
       .then((response) => {
         if (response.ok) {
           console.log('Memory deleted successfully')
+          updateParentHandler()
         } else {
           console.error('Failed to delete memory')
         }
@@ -86,6 +93,23 @@ const MemoryCard: React.FC<MemoryCardProps> = ({
     // Implement the save functionality here
     console.log('Save clicked', editedData)
     setIsEditing(false)
+    fetch(`http://localhost:4001/memories/${memoryId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(editedData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          updateParentHandler()
+        } else {
+          throw new Error(`API responded with status ${response.status}`)
+        }
+      })
+      .catch((error) => {
+        console.error('Error updating memory:', error)
+      })
   }
 
   return (
@@ -105,8 +129,14 @@ const MemoryCard: React.FC<MemoryCardProps> = ({
       </div>
       <div className='flex justify-end mt-3'>
         <div className='flex flex-row'>
-          <p className='text-gray-400 text-sm mt-4 mr-[12rem]'>{date}</p>
-          <div className='relative inline-block text-left'>
+          <p className='text-gray-400 text-sm mt-4 mr-[2rem]'>
+            {formatDate(new Date(date), {
+              month: 'short',
+              year: 'numeric',
+              day: 'numeric',
+            })}
+          </p>
+          <div className='relative'>
             <button
               onClick={toggleOptions}
               className='text-gray-600 hover:text-gray-800 mt-3'
@@ -124,35 +154,35 @@ const MemoryCard: React.FC<MemoryCardProps> = ({
                 />
               </svg>
             </button>
-          </div>
-          {showOptions && (
-            <div
-              ref={dropdownRef}
-              className='origin-top-right absolute right-56 mt-2 w-42 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5'
-            >
+            {showOptions && (
               <div
-                className='py-0'
-                role='menu'
-                aria-orientation='vertical'
-                aria-labelledby='options-menu'
+                ref={dropdownRef}
+                className='origin-top-right absolute w-42 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5'
               >
-                <button
-                  onClick={handleEdit}
-                  className='w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100'
-                  role='menuitem'
+                <div
+                  className='py-0'
+                  role='menu'
+                  aria-orientation='vertical'
+                  aria-labelledby='options-menu'
                 >
-                  edit
-                </button>
-                <button
-                  onClick={handleDelete}
-                  className='w-full px-4 py-2 text-left text-red-700 hover:bg-gray-100'
-                  role='menuitem'
-                >
-                  delete
-                </button>
+                  <button
+                    onClick={handleEdit}
+                    className='w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100'
+                    role='menuitem'
+                  >
+                    edit
+                  </button>
+                  <button
+                    onClick={handleDelete}
+                    className='w-full px-4 py-2 text-left text-red-700 hover:bg-gray-100'
+                    role='menuitem'
+                  >
+                    delete
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
       {isEditing && (
