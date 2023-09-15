@@ -1,30 +1,24 @@
 import * as React from 'react'
 
-const SortingButton: React.FC = () => {
+interface SortingButtonProps {
+  sortOrder: 'newToOld' | 'oldToNew'
+  onSortOrderChange: (newSortOrder: 'newToOld' | 'oldToNew') => void
+}
+
+const SortingButton: React.FC<SortingButtonProps> = ({
+  sortOrder,
+  onSortOrderChange,
+}) => {
   const [isDropdownOpen, setDropdownOpen] = React.useState<boolean>(false)
-  const [sortOrder, setSortOrder] = React.useState<'newToOld' | 'oldToNew'>(
-    'newToOld'
-  )
-  const [data, setData] = React.useState<string[]>([
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-  ])
 
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen)
   }
 
   const handleSortClick = (newSortOrder: 'newToOld' | 'oldToNew') => {
-    setSortOrder(newSortOrder)
+    // Update the sorting order via the callback prop
+    onSortOrderChange(newSortOrder)
     toggleDropdown()
-    // Sort the data accordingly
-    setData((prevData) =>
-      newSortOrder === 'newToOld'
-        ? [...prevData].sort()
-        : [...prevData].sort().reverse()
-    )
   }
 
   const availableOptions =

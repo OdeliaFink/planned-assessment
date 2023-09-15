@@ -5,6 +5,10 @@
   font-family: 'Wotfard', Futura, sans-serif;
 }
 
+#root {
+  height: 100%;
+}
+
 * {
   margin: 0;
 }
@@ -15,6 +19,7 @@ body {
 }
 
 body {
+  height: 100%;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }

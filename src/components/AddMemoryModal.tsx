@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as Yup from 'yup'
 
-const AddMemoryModal: React.FC = () => {
+const AddMemoryModal: React.FC = ({}: any) => {
   const [isModalOpen, setModalOpen] = React.useState(false)
   const [formData, setFormData] = React.useState({
     name: '',
@@ -12,7 +12,7 @@ const AddMemoryModal: React.FC = () => {
   const schema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     description: Yup.string().required('Description is required'),
-    imageUrl: Yup.string().required('Image url is required'),
+    imageUrl: Yup.string().required('Image URL is required'),
   })
 
   const openModal = () => {
@@ -21,9 +21,11 @@ const AddMemoryModal: React.FC = () => {
 
   const closeModal = () => {
     setModalOpen(false)
+    console.log('CLOSED')
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log('🚀 ~ file: AddMemoryModal.tsx:27 ~ handleSubmit ~ e:', e)
     e.preventDefault()
     try {
       await schema.validate(formData, { abortEarly: false })
@@ -32,23 +34,27 @@ const AddMemoryModal: React.FC = () => {
       const dataToSend = { ...formData, timestamp }
 
       console.log('Form data:', dataToSend)
-
-      const response = await fetch('/memories', {
+      const response = await fetch('http://localhost:4001/memories/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(dataToSend),
       })
+      console.log(
+        '🚀 ~ file: AddMemoryModal.tsx:43 ~ handleSubmit ~ response:',
+        response
+      )
 
       if (response.status === 201) {
-        console.log('Memory created successfully')
+        const newMemory = await response.json()
+        console.log('Memory created successfully:', newMemory)
+
+        closeModal()
       } else {
         const responseData = await response.json()
         console.error('Server error:', responseData.error)
       }
-
-      closeModal()
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const validationErrors = err.errors.join(', ')
@@ -81,9 +87,9 @@ const AddMemoryModal: React.FC = () => {
       </button>
 
       {isModalOpen && (
-        <div className='fixed inset-0 flex items-center justify-center z-50 mt-15 '>
+        <div className='fixed inset-0 flex items-center justify-center z-50 mt-15'>
           <div className='bg-white w-1/2 p-6 rounded-md shadow-lg border-2 border-solid border-black'>
-            <h2 className='text-lg font-semibold mb-4'>add Memory</h2>
+            <h2 className='text-lg font-semibold mb-4'>add memory</h2>
             <form onSubmit={handleSubmit}>
               <div className='mb-4'>
                 <label
@@ -102,10 +108,6 @@ const AddMemoryModal: React.FC = () => {
                     setFormData({ ...formData, name: e.target.value })
                   }
                 />
-
-                {/* <div className='text-red-600 text-sm'>
-                  {schema.errors?.name}
-                </div> */}
               </div>
               <div className='mb-4'>
                 <label
@@ -124,9 +126,24 @@ const AddMemoryModal: React.FC = () => {
                     setFormData({ ...formData, description: e.target.value })
                   }
                 />
-                {/* <div className='text-red-600 text-sm'>
-                  {schema.errors?.description}
-                </div> */}
+              </div>
+              <div className='mb-4'>
+                <label
+                  htmlFor='imageUrl'
+                  className='block text-sm font-medium text-gray-700'
+                >
+                  image url
+                </label>
+                <input
+                  type='text'
+                  id='imageUrl'
+                  name='imageUrl'
+                  className='mt-1 p-2 rounded-md border border-gray-300 focus:ring focus:ring-indigo-200 focus:outline-none block w-full sm:text-sm'
+                  value={formData.imageUrl}
+                  onChange={(e) =>
+                    setFormData({ ...formData, imageUrl: e.target.value })
+                  }
+                />
               </div>
               <div className='mt-4 flex justify-end'>
                 <button
@@ -134,13 +151,13 @@ const AddMemoryModal: React.FC = () => {
                   className='mr-4 px-4 py-2 bg-neutral-300 text-gray-700 rounded-md hover:bg-gray-200  focus:outline-none'
                   onClick={closeModal}
                 >
-                  cancel
+                  Cancel
                 </button>
                 <button
                   type='submit'
                   className='px-4 py-2 bg-orange-400 text-white rounded-md hover:bg-orange-200 focus:outline-none'
                 >
-                  submit
+                  Submit
                 </button>
               </div>
             </form>
