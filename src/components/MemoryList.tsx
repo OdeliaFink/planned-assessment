@@ -64,59 +64,57 @@ const MemoryList = () => {
   }
 
   return (
-    <>
-      <div className=''>
-        <div className='flex justify-between flex-row  py-7'>
-          <SortingButton
-            sortOrder={sortOrder}
-            onSortOrderChange={handleSortOrderChange}
-          />
-          <AddMemoryModal updateParentHandler={refreshMemories} />
-        </div>
-        <ul>
-          {sortedMemories.map(
-            (
-              memory: {
-                id: number
-                name: string
-                description: string
-                timestamp: string
-                imageUrl: string
-              },
-              index: number
-            ) => (
-              <li
-                key={memory.id}
-                className='flex flex-col justify-center  w-2/5 ml-auto mr-auto py-2'
-              >
-                <MemoryCard
-                  memoryId={memory.id}
-                  imageUrl={memory.imageUrl}
-                  name={memory.name}
-                  description={memory.description}
-                  date={memory.timestamp}
-                  updateParentHandler={refreshMemories}
-                />
-                {index !== memories.length - 1 && (
-                  <ul className='w-[10%] ml-auto mr-auto py-2 pt-5'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      width='30'
-                      height='30'
-                      viewBox='0 0 10 30'
-                    >
-                      <circle cx='5' cy='5' r='2' fill='black' />
-                      <circle cx='5' cy='15' r='2' fill='black' />
-                      <circle cx='5' cy='25' r='2' fill='black' />
-                    </svg>
-                  </ul>
-                )}
-              </li>
-            )
-          )}
-        </ul>
+    <div className='flex flex-col px-10'>
+      <div className='flex justify-between flex-row  py-7'>
+        <SortingButton
+          sortOrder={sortOrder}
+          onSortOrderChange={handleSortOrderChange}
+        />
+        <AddMemoryModal updateParentHandler={refreshMemories} />
       </div>
-    </>
+      <ul>
+        {sortedMemories.map(
+          (
+            memory: {
+              id: number
+              name: string
+              description: string
+              timestamp: string
+              imageUrl: string
+            },
+            index: number
+          ) => (
+            <li
+              key={memory.id}
+              className='flex flex-col justify-center  w-2/5 ml-auto mr-auto py-2'
+            >
+              <MemoryCard
+                memoryId={memory.id}
+                imageUrl={memory.imageUrl}
+                name={memory.name}
+                description={memory.description}
+                date={memory.timestamp}
+                updateParentHandler={refreshMemories}
+              />
+              {index !== memories.length - 1 && (
+                <ul className='w-[10%] ml-auto mr-auto py-2 pt-5'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    width='30'
+                    height='30'
+                    viewBox='0 0 10 30'
+                  >
+                    <circle cx='5' cy='5' r='2' fill='black' />
+                    <circle cx='5' cy='15' r='2' fill='black' />
+                    <circle cx='5' cy='25' r='2' fill='black' />
+                  </svg>
+                </ul>
+              )}
+            </li>
+          )
+        )}
+      </ul>
+    </div>
   )
 }
 
