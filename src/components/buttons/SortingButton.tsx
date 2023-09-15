@@ -16,7 +16,6 @@ const SortingButton: React.FC<SortingButtonProps> = ({
   }
 
   const handleSortClick = (newSortOrder: 'newToOld' | 'oldToNew') => {
-    // Update the sorting order via the callback prop
     onSortOrderChange(newSortOrder)
     toggleDropdown()
   }
