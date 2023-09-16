@@ -64,7 +64,7 @@ const MemoryList = () => {
   }
 
   return (
-    <div className='flex flex-col px-10'>
+    <div className='flex flex-col px-10 pb-[5rem]'>
       <div className='flex justify-between flex-row  py-7'>
         <SortingButton
           sortOrder={sortOrder}

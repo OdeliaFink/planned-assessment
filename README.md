@@ -16,3 +16,29 @@ As a first iteration for this solution, we want to build a web application that 
 ### Inspiration mockup
 
 ![Memory lane mockup](./memory_lane.png)
+
+## Posting Memories
+
+Users can create and post memories, which typically consist of text and optionally, images or other multimedia content.
+Memories are timestamped upon creation and added to the user's memory feed.
+
+## Editing Memories
+
+Users can edit the content of their posted memories to correct mistakes or update information by clicking the three dots in the bottom right of the text area.
+
+## Deleting Memories
+
+Users have the option to delete any memory they have posted.
+
+## Chronological Display
+
+Memories are displayed in the order they were posted, with the most recent memory appearing at the top.
+This chronological order is maintained through the use of a chained column.
+
+## Stretch goals:
+
+Added verification in form inputs
+Likes and Comments: Allowing users to like and comment on memories, enhancing user engagement.
+Notifications: Sending notifications to users when their memories receive likes or comments.
+User login: Users can create an account by providing their email address, username, and password.
+Privacy Settings: Giving users control over the visibility of their memories (public, private, friends-only).

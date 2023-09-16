@@ -20,6 +20,20 @@ const SortingButton: React.FC<SortingButtonProps> = ({
     toggleDropdown()
   }
 
+  React.useEffect(() => {
+    const handleScroll = () => {
+      if (isDropdownOpen) {
+        toggleDropdown()
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [isDropdownOpen])
+
   const availableOptions =
     sortOrder === 'newToOld' ? ['old to new'] : ['new to old']
 
@@ -29,7 +43,7 @@ const SortingButton: React.FC<SortingButtonProps> = ({
         className='rounded-md bg-white px-2 py-1  pr-6 hover:bg-orange-200 ease-in-out duration-200 focus:outline-none text-xs bg-white shadow-md'
         onClick={toggleDropdown}
       >
-        {sortOrder === 'newToOld' ? 'new to old' : 'old to new'}{' '}
+        {sortOrder === 'newToOld' ? 'new to old' : 'old to new'}
         <span className='ml-1'>
           {isDropdownOpen ? (
             <svg
@@ -65,7 +79,7 @@ const SortingButton: React.FC<SortingButtonProps> = ({
         </span>
       </button>
       {isDropdownOpen && (
-        <ul className='absolute mt-0 py-1 bg-white border border-white rounded-md shadow-lg hover:bg-orange-200'>
+        <ul className='absolute mt-[1px] bg-white rounded-md shadow-lg hover:bg-orange-200'>
           {availableOptions.map((option) => (
             <li
               key={option}

@@ -18,15 +18,15 @@ const DescriptionTextArea: React.FC = () => {
           onChange={(e) => setContent(e.target.value)}
         />
       ) : (
-        <div className='w-full h-full'>
+        <div className='w-full h-full '>
           {content ||
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'}
+            'odelia’s journey has been a tapestry of curiosity and exploration. from a young age, their inquisitive mind led them through diverse interests. education shaped their multidisciplinary perspective, while personal experiences added depth and resilience to their story. embracing challenges and cherishing relationship, odelia continues to craft a unique and inspiring life story.'}
         </div>
       )}
 
       <div className='flex justify-end'>
         <button
-          className='p-q rounded-full bg-white-300 hover:bg-orange-200 focus:outline-none ease-in'
+          className='p-q rounded-full bg-white-300 hover:bg-orange-200 ease-in-out duration-300 focus:outline-none'
           onClick={handleEditToggle}
         >
           <svg

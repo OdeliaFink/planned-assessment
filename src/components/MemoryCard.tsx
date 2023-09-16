@@ -124,11 +124,6 @@ const MemoryCard: React.FC<MemoryCardProps> = ({
         </div>
         <div className='m-4'>
           <h3 className='text-1xl font-semibold'>{name}</h3>
-          <p className='text-gray-600 mt-3'>{description}</p>
-        </div>
-      </div>
-      <div className='flex justify-end mt-3'>
-        <div className='flex flex-row'>
           <p className='text-gray-400 text-sm mt-4 mr-[2rem]'>
             {formatDate(new Date(date), {
               month: 'short',
@@ -136,10 +131,15 @@ const MemoryCard: React.FC<MemoryCardProps> = ({
               day: 'numeric',
             })}
           </p>
+          <p className='text-gray-600 mt-3'>{description}</p>
+        </div>
+      </div>
+      <div className='flex justify-end mt-3'>
+        <div className='flex flex-row'>
           <div className='relative'>
             <button
               onClick={toggleOptions}
-              className='text-gray-600 hover:text-gray-800 mt-3'
+              className='text-black-600 hover:text-orange-400 ease-in-out duration-300 mt-3'
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -187,7 +187,7 @@ const MemoryCard: React.FC<MemoryCardProps> = ({
       </div>
       {isEditing && (
         <div className='fixed inset-0 flex justify-center items-center z-10'>
-          <div className='bg-white p-5 rounded shadow-lg border border-black'>
+          <div className='bg-white p-5 px-10 rounded shadow-lg border border-black'>
             <h2 className='text-2xl font-semibold mb-4'>edit memory</h2>
             <label className='block mb-2'>name:</label>
             <input
@@ -196,7 +196,7 @@ const MemoryCard: React.FC<MemoryCardProps> = ({
               onChange={(e) =>
                 setEditedData({ ...editedData, name: e.target.value })
               }
-              className='border border-gray-300 rounded-md p-2 mb-4 w-full'
+              className='border border-gray-300 px-3 rounded-md p-2 mb-4 w-full'
             />
             <label className='block mb-2'>description:</label>
             <textarea
