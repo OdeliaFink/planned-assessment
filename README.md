@@ -13,13 +13,9 @@ As a first iteration for this solution, we want to build a web application that 
 - Update the API to accommodate for your technical design. Run the API by using `npm run serve:api`.
 - The provided mockup is only for reference and inspiration. Feel free to improve it!
 
-### Inspiration mockup
-
-![Memory lane mockup](./memory_lane.png)
-
 ## Screenshot
 
-![Memory lane mockup](./src/assets/img1.png)
+![Main screen](./src/assets/img1.png)
 
 # Functionalities:
 
@@ -38,14 +34,22 @@ Users have the option to delete any memory they have posted.
 
 ## Chronological Display
 
-Memories are displayed in the order they were posted, with the most recent memory appearing at the top.
-This chronological order is maintained through the use of a chained column.
+Memories are displayed in order they were posted, with the most recent memory appearing appended to the bottom. This chronological order is maintained through the use of a chained column and can be adjusted by toggling the button.
 
 ## Stretch goals:
 
-- Added verification in form inputs
-- Likes and Comments: Allowing users to like and comment on memories, enhancing user engagement.
-- Notifications: Sending notifications to users when their memories receive likes or comments.
-- User login: Users can create an account by providing their email address, username, and password.
-- Privacy Settings: Giving users control over the visibility of their memories (public, private, friends-only).
-- Responsiveness: Having mobile and tablet versions custom media queries to fit the different viewports.
+### Likes and Comments:
+
+Allowing users to like and comment on memories, enhancing user engagement.
+
+### Notifications:
+
+Sending notifications to users when their memories receive likes or comments.
+
+### User login:
+
+Users can create an account by providing their email address, username, and password.
+
+### Privacy Settings:
+
+Giving users control over the visibility of their memories (public, private, friends-only).

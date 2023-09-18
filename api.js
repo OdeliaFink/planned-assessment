@@ -98,7 +98,6 @@ app.put('/memories/:id', (req, res) => {
 
 app.delete('/memories/:id', (req, res) => {
   const { id } = req.params
-  console.log('🚀 ~ file: api.js:112 ~ app.delete ~  req.params:', req.params)
 
   db.run('DELETE FROM memories WHERE id = ?', [id], (err) => {
     if (err) {

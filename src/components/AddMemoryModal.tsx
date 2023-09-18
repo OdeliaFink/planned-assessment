@@ -6,16 +6,17 @@ type Props = {
 }
 
 const AddMemoryModal = ({ updateParentHandler }: Props) => {
-  const [isModalOpen, setModalOpen] = React.useState(false)
   const [formData, setFormData] = React.useState({})
-  const validUrlRegex = new RegExp(/https?:\/\/.*.*$/)
+  const [isModalOpen, setModalOpen] = React.useState(false)
+  const [validationErrors, setValidationErrors] = React.useState<string[]>([])
+  const validUrlRegex = new RegExp(/^(https:\/\/|www\.)[^\/]*\/.*$/)
 
   const schema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    description: Yup.string().required('Description is required'),
+    description: Yup.string().required('description is required'),
     imageUrl: Yup.string()
-      .required('Image URL is required')
+      .required('image url is required')
       .matches(validUrlRegex, 'enter valid url'),
+    name: Yup.string().required('name is required'),
   })
 
   const openModal = () => {
@@ -26,7 +27,15 @@ const AddMemoryModal = ({ updateParentHandler }: Props) => {
     setModalOpen(false)
   }
 
+  const handleDescriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const description = e.target.value
+    setFormData({ ...formData, description })
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
+    setValidationErrors([])
     e.preventDefault()
     try {
       await schema.validate(formData, { abortEarly: false })
@@ -50,11 +59,11 @@ const AddMemoryModal = ({ updateParentHandler }: Props) => {
       } else {
         const responseData = await response.json()
         console.error('Server error:', responseData.error)
+        throw new Error(`API responded with status ${response.status}`)
       }
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
-        const validationErrors = err.errors.join(', ')
-        console.error('Validation errors:', validationErrors)
+        setValidationErrors(err.errors)
       } else {
         console.error('Unknown error:', err)
       }
@@ -64,7 +73,7 @@ const AddMemoryModal = ({ updateParentHandler }: Props) => {
   return (
     <div>
       <button
-        className='flex rounded-md bg-white border border-black px-2 py-1 items-center hover:bg-orange-200 focus:outline-none ease-in-out duration-300'
+        className='flex rounded-md bg-white border border-gray-400 px-2 py-1 items-center hover:bg-orange-200 hover:border-orange-200 focus:outline-none ease-in-out duration-300'
         onClick={openModal}
       >
         <svg
@@ -83,14 +92,13 @@ const AddMemoryModal = ({ updateParentHandler }: Props) => {
       </button>
 
       {isModalOpen && (
-        <div className='fixed inset-0 flex items-center justify-center z-50 mt-15'>
-          <div className='bg-white w-1/2 p-6 rounded-md shadow-lg border-2 border-solid border-black'>
-            <h2 className='text-lg font-semibold mb-4'>add memory</h2>
+        <div className='fixed inset-0 flex items-center justify-center z-50'>
+          <div className='bg-white w-1/2 p-6 rounded-md shadow-lg border border-solid border-gray-400'>
             <form onSubmit={handleSubmit}>
               <div className='mb-4'>
                 <label
                   htmlFor='name'
-                  className='block text-sm font-medium text-gray-700'
+                  className='block text-xs font-medium text-gray-700'
                 >
                   name
                 </label>
@@ -98,8 +106,11 @@ const AddMemoryModal = ({ updateParentHandler }: Props) => {
                   type='text'
                   id='name'
                   name='name'
-                  className='mt-1 p-2 rounded-md border border-gray-300 focus:ring focus:ring-indigo-200 focus:outline-none block w-full sm:text-sm'
-                  // value={formData.name}
+                  className={`mt-1 p-2 rounded-md border border-gray-300 focus:ring focus:ring-gray-200 focus:outline-none block w-full text-xs ${
+                    validationErrors.includes('name is required')
+                      ? 'border-red-500'
+                      : ''
+                  }`}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
@@ -108,25 +119,30 @@ const AddMemoryModal = ({ updateParentHandler }: Props) => {
               <div className='mb-4'>
                 <label
                   htmlFor='description'
-                  className='block text-sm font-medium text-gray-700'
+                  className='block text-xs font-medium text-gray-700'
                 >
                   description
                 </label>
                 <textarea
                   id='description'
                   name='description'
+                  maxLength={75}
                   rows={3}
-                  className='mt-1 p-2 rounded-md border border-gray-300 focus:ring focus:ring-indigo-200 focus:outline-none block w-full sm:text-sm'
-                  // value={formData.description}
-                  onChange={(e) =>
+                  className={`mt-1 p-2 rounded-md border border-gray-300 focus:ring focus:ring-gray-200 focus:outline-none block w-full text-xs ${
+                    validationErrors.includes('description is required')
+                      ? 'border-red-500'
+                      : ''
+                  }`}
+                  onChange={(e) => {
                     setFormData({ ...formData, description: e.target.value })
-                  }
+                    handleDescriptionChange
+                  }}
                 />
               </div>
               <div className='mb-4'>
                 <label
                   htmlFor='imageUrl'
-                  className='block text-sm font-medium text-gray-700'
+                  className='block text-xs font-medium text-gray-700'
                 >
                   image url
                 </label>
@@ -134,26 +150,35 @@ const AddMemoryModal = ({ updateParentHandler }: Props) => {
                   type='text'
                   id='imageUrl'
                   name='imageUrl'
-                  className='mt-1 p-2 rounded-md border border-gray-300 focus:ring focus:ring-indigo-200 focus:outline-none block w-full sm:text-sm'
-                  // value={formData.imageUrl}
+                  className={`mt-1 p-2 rounded-md border border-gray-300 focus:ring focus:ring-gray-200 focus:outline-none block w-full text-xs ${
+                    validationErrors.includes('image url is required') ||
+                    validationErrors.includes('enter valid url')
+                      ? 'border-red-500'
+                      : ''
+                  }`}
                   onChange={(e) =>
                     setFormData({ ...formData, imageUrl: e.target.value })
                   }
                 />
               </div>
+              <ul className='text-xs text-red-600'>
+                {validationErrors.length > 0
+                  ? validationErrors.map((error: string) => <li>{error}</li>)
+                  : null}
+              </ul>
               <div className='mt-4 flex justify-end'>
                 <button
                   type='button'
-                  className='mr-4 px-4 py-2 bg-neutral-300 text-gray-700 rounded-md hover:bg-gray-200  focus:outline-none'
+                  className='mr-4 px-4 w-1/2 py-2 bg-neutral-300 text-gray-700 text-xs rounded-md hover:bg-gray-200  focus:outline-none'
                   onClick={closeModal}
                 >
-                  Cancel
+                  cancel
                 </button>
                 <button
                   type='submit'
-                  className='px-4 py-2 bg-orange-400 text-white rounded-md hover:bg-orange-200 focus:outline-none'
+                  className='w-1/2 px-4 py-2 bg-orange-400 text-xs text-white rounded-md hover:bg-orange-200 focus:outline-none'
                 >
-                  Submit
+                  add
                 </button>
               </div>
             </form>

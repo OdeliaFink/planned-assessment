@@ -9,7 +9,7 @@ const DescriptionTextArea: React.FC = () => {
   }
 
   return (
-    <div className='w-full  rounded-lg border border-gray-200 p-5  bg-white shadow-md'>
+    <div className='w-full  rounded-lg border border-gray-200 px-4 pt-4 pb-1 bg-white shadow-md'>
       {isEditing ? (
         <textarea
           className='w-full h-30 resize-none outline-none'
@@ -19,8 +19,10 @@ const DescriptionTextArea: React.FC = () => {
         />
       ) : (
         <div className='w-full h-full '>
-          {content ||
-            'odelia’s journey has been a tapestry of curiosity and exploration. from a young age, their inquisitive mind led them through diverse interests. education shaped their multidisciplinary perspective, while personal experiences added depth and resilience to their story. embracing challenges and cherishing relationship, odelia continues to craft a unique and inspiring life story.'}
+          <p className='text-xs mr-[1rem]'>
+            {content ||
+              'odelia’s journey has been a tapestry of curiosity and exploration. from a young age, their inquisitive mind led them through diverse interests. education shaped their multidisciplinary perspective, while personal experiences added depth and resilience to their story. embracing challenges and cherishing relationship, odelia continues to craft a unique and inspiring life story.'}
+          </p>
         </div>
       )}
 

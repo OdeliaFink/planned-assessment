@@ -1,13 +1,13 @@
 import * as React from 'react'
 
 interface SortingButtonProps {
-  sortOrder: 'newToOld' | 'oldToNew'
   onSortOrderChange: (newSortOrder: 'newToOld' | 'oldToNew') => void
+  sortOrder: 'newToOld' | 'oldToNew'
 }
 
 const SortingButton: React.FC<SortingButtonProps> = ({
-  sortOrder,
   onSortOrderChange,
+  sortOrder,
 }) => {
   const [isDropdownOpen, setDropdownOpen] = React.useState<boolean>(false)
 
@@ -44,7 +44,6 @@ const SortingButton: React.FC<SortingButtonProps> = ({
         onClick={toggleDropdown}
       >
         {sortOrder === 'newToOld' ? 'old to new' : 'new to old'}{' '}
-        {/* Updated text */}
         <span className='ml-1'>
           {isDropdownOpen ? (
             <svg
