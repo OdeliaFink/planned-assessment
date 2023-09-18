@@ -35,15 +35,16 @@ const SortingButton: React.FC<SortingButtonProps> = ({
   }, [isDropdownOpen])
 
   const availableOptions =
-    sortOrder === 'newToOld' ? ['old to new'] : ['new to old']
+    sortOrder === 'newToOld' ? ['new to old'] : ['old to new']
 
   return (
     <div className='relative inline-block'>
       <button
-        className='rounded-md bg-white px-2 py-1  pr-6 hover:bg-orange-200 ease-in-out duration-200 focus:outline-none text-xs bg-white shadow-md'
+        className='rounded-md bg-white px-2 py-1 pr-6 hover:bg-orange-200 ease-in-out duration-200 focus:outline-none text-xs bg-white shadow-md'
         onClick={toggleDropdown}
       >
-        {sortOrder === 'newToOld' ? 'new to old' : 'old to new'}
+        {sortOrder === 'newToOld' ? 'old to new' : 'new to old'}{' '}
+        {/* Updated text */}
         <span className='ml-1'>
           {isDropdownOpen ? (
             <svg
