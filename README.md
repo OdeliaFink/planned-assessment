@@ -43,8 +43,9 @@ This chronological order is maintained through the use of a chained column.
 
 ## Stretch goals:
 
-Added verification in form inputs
-Likes and Comments: Allowing users to like and comment on memories, enhancing user engagement.
-Notifications: Sending notifications to users when their memories receive likes or comments.
-User login: Users can create an account by providing their email address, username, and password.
-Privacy Settings: Giving users control over the visibility of their memories (public, private, friends-only).
+- Added verification in form inputs
+- Likes and Comments: Allowing users to like and comment on memories, enhancing user engagement.
+- Notifications: Sending notifications to users when their memories receive likes or comments.
+- User login: Users can create an account by providing their email address, username, and password.
+- Privacy Settings: Giving users control over the visibility of their memories (public, private, friends-only).
+- Responsiveness: Having mobile and tablet versions custom media queries to fit the different viewports.
