@@ -17,6 +17,12 @@ As a first iteration for this solution, we want to build a web application that 
 
 ![Memory lane mockup](./memory_lane.png)
 
+## Screenshot
+
+![Memory lane mockup](./src/assets/img1.png)
+
+# Functionalities:
+
 ## Posting Memories
 
 Users can create and post memories, which typically consist of text and optionally, images or other multimedia content.
@@ -24,7 +30,7 @@ Memories are timestamped upon creation and added to the user's memory feed.
 
 ## Editing Memories
 
-Users can edit the content of their posted memories to correct mistakes or update information by clicking the three dots in the bottom right of the text area.
+Users can edit the content of their posted memories to correct mistakes or update information by clicking the three dots in the bottom right of the text area for a modal to pop up with the existing info to be changed.
 
 ## Deleting Memories
 
