@@ -120,7 +120,7 @@ const MemoryCard: React.FC<MemoryCardProps> = ({
       <div
         className={`flex items-center max-h-auto pt-${
           description.length < 75 ? 3 : 2
-        }`}
+        } mt-3`}
       >
         <div className='flex-shrink-0 3'>
           <img
