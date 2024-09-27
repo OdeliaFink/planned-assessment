@@ -1,19 +1,27 @@
-import { CubeIcon } from '@heroicons/react/20/solid'
 import './App.css'
+import { CubeIcon } from '@heroicons/react/20/solid'
+import DescriptionTextArea from './components/DescriptionTextArea'
+import MemoryList from './components/MemoryList'
+import SharingButton from './components/buttons/SharingButton'
 
 function App() {
   return (
-    <div>
-      <div className='mx-auto max-w-7xl sm:px-6 lg:px-8 mt-32'>
-        <div className='overflow-hidden rounded-lg bg-white shadow h-96'>
-          <div className='px-4 py-5 sm:p-6'>
-            <div className='flex items-center'>
-              <CubeIcon className='h-16 w-16 inline-block' />
-              <h1 className='text-4xl font-semibold text-gray-900 mb-4 ml-4 mt-4'>
-                Memory lane
+    <div className='flex bg-orange-50 min-h-screen'>
+      <div className='flex-shrink-0 p-2  pt-5 border-r border-gray-300'>
+        <CubeIcon className='h-12 w-12 inline-block' />
+      </div>
+      <div className='flex-grow flex flex-col justify-between overflow-hidden'>
+        <div>
+          <div className='sm:px-12 px-10'>
+            <div className='px-3 py-3 pt-5 flex justify-between'>
+              <h1 className='font-regular text-2xl tracking-tighter'>
+                odelia's memory lane
               </h1>
+              <SharingButton />
             </div>
+            <DescriptionTextArea />
           </div>
+          <MemoryList />
         </div>
       </div>
     </div>
